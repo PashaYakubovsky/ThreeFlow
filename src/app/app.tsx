@@ -1,8 +1,11 @@
 import Linkify from "react-linkify";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import style from "./app.module.scss";
 import useAppStore from "../stores/appStore";
 import { AvailableApis } from "../stores/appStore";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+gsap.registerPlugin(ScrollTrigger);
 
 const apis = Object.entries(AvailableApis);
 
@@ -15,6 +18,8 @@ function shuffleArray(array: [string, AvailableApis][]) {
 }
 
 const App = () => {
+    const sectionRefs = useRef<HTMLElement[]>([]);
+    const timelineRef = useRef<GSAPTimeline | null>(null);
     const apiCall = useAppStore(state => state.apiCall);
     const response = useAppStore(state => state.response);
     const currentApi = useAppStore(state => state.currentApi);
@@ -34,12 +39,35 @@ const App = () => {
         await apiCall(_currentApi);
     }, [apis, currentApi, changeCurrentApi, shuffleArray]);
 
+    useEffect(() => {
+        if (timelineRef.current) {
+            timelineRef.current.kill();
+        }
+        timelineRef.current = gsap.timeline();
+
+        timelineRef.current.fromTo(
+            sectionRefs.current[0],
+            {
+                opacity: 0,
+                width: "0%",
+            },
+            {
+                opacity: 1,
+                duration: 2,
+                width: "100%",
+            }
+        );
+    }, []);
+
     return (
         <main className={style.app}>
-            <section className={style.section}>
+            <span className={style.scrollProgress}>
+                <span id="scrollProgressBar" className={style.scrollProgressBar} />
+            </span>
+            <section ref={node => node && sectionRefs.current.push(node)} className={style.section}>
                 <header className={style.header}>Hi there, happy to see you :)</header>
             </section>
-            <section className={style.section}>
+            <section ref={node => node && sectionRefs.current.push(node)} className={style.section}>
                 <Linkify
                     componentDecorator={text => {
                         if (/.(jpg|png|jpeg)/gi.test(text)) {
@@ -53,7 +81,8 @@ const App = () => {
 
                             return <>{text}</>;
                         }
-                    }}>
+                    }}
+                >
                     <pre className={style.paragraph}>
                         {response ? response : "No response yet."}
                     </pre>
@@ -62,14 +91,15 @@ const App = () => {
                 <button
                     className={style.button}
                     onClick={() => apiCall(currentApi)}
-                    disabled={isLoading}>
+                    disabled={isLoading}
+                >
                     Make API Call
                 </button>
                 <button className={style.button} onClick={nextApi} disabled={isLoading}>
                     Next API
                 </button>
             </section>
-            <section className={style.section}>
+            <section ref={node => node && sectionRefs.current.push(node)} className={style.section}>
                 <h2 className={style.subtitle}>This is a React app.</h2>
             </section>
         </main>

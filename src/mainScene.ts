@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import * as THREE from "three";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 // import * as dat from "dat.gui";
 // import { OrbitControls as OrbitControlsType } from "./../types/three-ts-types/types/three/examples/jsm/controls/OrbitControls.d";
@@ -11,17 +12,43 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#app") as HTMLCanvasElement,
 });
-const animationTimeline = gsap.timeline();
+let scroll: number, scrollCaption: number;
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+// const animationTimeline = gsap.timeline();
 // let animator: PlainAnimator;
 // Add a grid helper to the scene
 // const gui = new dat.GUI();
 init();
-animate();
+
+if (WebGL.isWebGLAvailable()) {
+    // Initiate function or other initializations here
+    animate();
+} else {
+    setAWarnMessage();
+}
+function setAWarnMessage() {
+    const warning = WebGL.getWebGLErrorMessage();
+
+    const rootElem = document.getElementById("root");
+    warning.style.position = "fixed";
+    warning.style.left = "50%";
+    warning.style.top = "50%";
+    warning.style.transform = "translate(-50%, -50%)";
+    warning.style.zIndex = "100";
+    if (rootElem) {
+        document.body.appendChild(warning);
+    } else {
+        setTimeout(setAWarnMessage, 5000);
+    }
+}
 
 function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.position.setZ(30);
+    camera.position.setX(20);
+    camera.position.setY(20);
 
     // const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
     // const material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
@@ -36,8 +63,9 @@ function init() {
 
     scene.add(pointLight, ambientLight);
 
-    const lightHelper = new THREE.PointLightHelper(pointLight);
-    scene.add(lightHelper);
+    // Debug
+    // const lightHelper = new THREE.PointLightHelper(pointLight);
+    // scene.add(lightHelper);
 
     // Debug
     // const gridHelper = new THREE.GridHelper(200, 50);
@@ -108,6 +136,7 @@ function init() {
             shininess: 30, // set the shininess of the mesh
         })
     );
+
     moon.castShadow = true;
     moon.position.z = 0;
     moon.position.x = 0;
@@ -120,7 +149,18 @@ function init() {
     // gui.add(moon.position, "z").min(-100).max(100).step(0.01).name("Moon Z");
 
     function moveCamera() {
-        const t = document.body.getBoundingClientRect().top;
+        const rect = document.body.getBoundingClientRect();
+        const t = rect.top;
+
+        if (rect) {
+            // get scroll position in decimal and set into variable and html attribute
+            scroll = Math.abs(rect.top / (rect.height - window.innerHeight));
+            scrollCaption = +scroll.toFixed(2);
+
+            const barElem = document.querySelector("#scrollProgressBar") as HTMLSpanElement;
+            barElem.style.width = `${scroll * 100}%`;
+            barElem.setAttribute("scroll-progress", `${scrollCaption * 100}`);
+        }
 
         gsap.to(moon.position, {
             x: (moon.position.x + t) * -0.002,
@@ -138,11 +178,11 @@ function init() {
             ease: "Quart.easeOut",
         });
 
-        animationTimeline.to(camera.position, {
-            x: t * -0.002,
-            y: t * -0.0002,
-            z: t * -0.02,
-            duration: 0.005,
+        gsap.to(camera.position, {
+            x: scrollCaption,
+            y: scrollCaption,
+            z: t * -0.2,
+            duration: 0.5,
         });
 
         gsap.to(rickRollMesh.position, {
