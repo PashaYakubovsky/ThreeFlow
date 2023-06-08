@@ -179,9 +179,9 @@ function init() {
         });
 
         gsap.to(camera.position, {
-            x: scrollCaption,
+            x: scrollCaption / 4,
             y: scrollCaption,
-            z: t * -0.2,
+            z: t * -0.02,
             duration: 0.5,
         });
 
