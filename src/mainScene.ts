@@ -13,8 +13,8 @@ const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#app") as HTMLCanvasElement,
 });
 let scroll: number, scrollCaption: number;
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2();
+// const raycaster = new THREE.Raycaster();
+// const pointer = new THREE.Vector2();
 // const animationTimeline = gsap.timeline();
 // let animator: PlainAnimator;
 // Add a grid helper to the scene
@@ -85,7 +85,7 @@ function init() {
 
         const [x, y, z] = Array(3)
             .fill(0)
-            .map(() => THREE.MathUtils.randFloatSpread(100));
+            .map(() => THREE.MathUtils.randFloatSpread(400));
 
         star.position.set(x, y, z);
         scene.add(star);
@@ -209,7 +209,7 @@ function init() {
         });
 
         gsap.to(rickRollMesh.position, {
-            x: (rickRollMesh.position.x + t) * -0.02,
+            x: (rickRollMesh.position.x + t) * -0.2,
             y: (rickRollMesh.position.y + t) * -0.002,
             z: (rickRollMesh.position.z + t) * -0.0002,
             duration: 0.05,

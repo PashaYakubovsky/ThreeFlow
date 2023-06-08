@@ -5,6 +5,7 @@ import useAppStore from "../stores/appStore";
 import { AvailableApis } from "../stores/appStore";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import Cursor from "../components/cursor/cursor";
 gsap.registerPlugin(ScrollTrigger);
 
 const apis = Object.entries(AvailableApis);
@@ -53,7 +54,8 @@ const App = () => {
             },
             {
                 opacity: 1,
-                duration: 2,
+                duration: 0.5,
+                ease: "power2.out",
                 width: "100%",
             }
         );
@@ -61,6 +63,7 @@ const App = () => {
 
     return (
         <main className={style.app}>
+            <Cursor />
             <span className={style.scrollProgress}>
                 <span id="scrollProgressBar" className={style.scrollProgressBar} />
             </span>
@@ -81,8 +84,7 @@ const App = () => {
 
                             return <>{text}</>;
                         }
-                    }}
-                >
+                    }}>
                     <pre className={style.paragraph}>
                         {response ? response : "No response yet."}
                     </pre>
@@ -91,8 +93,7 @@ const App = () => {
                 <button
                     className={style.button}
                     onClick={() => apiCall(currentApi)}
-                    disabled={isLoading}
-                >
+                    disabled={isLoading}>
                     Make API Call
                 </button>
                 <button className={style.button} onClick={nextApi} disabled={isLoading}>
