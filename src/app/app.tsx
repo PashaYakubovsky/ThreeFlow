@@ -6,6 +6,8 @@ import { AvailableApis } from "../stores/appStore";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Cursor from "../components/cursor/cursor";
+import useAnimationStore from "../stores/animationStore";
+import AnimationText from "../components/animation-text/animationText";
 gsap.registerPlugin(ScrollTrigger);
 
 const apis = Object.entries(AvailableApis);
@@ -19,8 +21,9 @@ function shuffleArray(array: [string, AvailableApis][]) {
 }
 
 const App = () => {
+    const timeline = useAnimationStore(state => state.timeline);
+    const changeTimeline = useAnimationStore(state => state.changeTimeline);
     const sectionRefs = useRef<HTMLElement[]>([]);
-    const timelineRef = useRef<GSAPTimeline | null>(null);
     const apiCall = useAppStore(state => state.apiCall);
     const response = useAppStore(state => state.response);
     const currentApi = useAppStore(state => state.currentApi);
@@ -41,24 +44,24 @@ const App = () => {
     }, [apis, currentApi, changeCurrentApi, shuffleArray]);
 
     useEffect(() => {
-        if (timelineRef.current) {
-            timelineRef.current.kill();
-        }
-        timelineRef.current = gsap.timeline();
+        if (!timeline) {
+            const tl = gsap.timeline();
+            changeTimeline(tl);
 
-        timelineRef.current.fromTo(
-            sectionRefs.current[0],
-            {
-                opacity: 0,
-                width: "0%",
-            },
-            {
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out",
-                width: "100%",
-            }
-        );
+            tl.fromTo(
+                sectionRefs.current[0],
+                {
+                    opacity: 0,
+                    width: "0%",
+                },
+                {
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    width: "100%",
+                }
+            );
+        }
     }, []);
 
     return (
@@ -68,7 +71,7 @@ const App = () => {
                 <span id="scrollProgressBar" className={style.scrollProgressBar} />
             </span>
             <section ref={node => node && sectionRefs.current.push(node)} className={style.section}>
-                <header className={style.header}>Hi there, happy to see you :)</header>
+                <AnimationText className={style.header} text="Hi there, happy to see you :)" />
             </section>
             <section ref={node => node && sectionRefs.current.push(node)} className={style.section}>
                 <Linkify
@@ -84,7 +87,8 @@ const App = () => {
 
                             return <>{text}</>;
                         }
-                    }}>
+                    }}
+                >
                     <pre className={style.paragraph}>
                         {response ? response : "No response yet."}
                     </pre>
@@ -93,7 +97,8 @@ const App = () => {
                 <button
                     className={style.button}
                     onClick={() => apiCall(currentApi)}
-                    disabled={isLoading}>
+                    disabled={isLoading}
+                >
                     Make API Call
                 </button>
                 <button className={style.button} onClick={nextApi} disabled={isLoading}>

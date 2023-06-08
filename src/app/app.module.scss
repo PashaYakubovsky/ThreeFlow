@@ -30,14 +30,12 @@ $spacing: 1rem;
     }
 }
 .header {
-    background-color: #000;
-    grid-column: 2 / span 5;
-    font-size: 2rem;
-    padding: 2rem;
     margin-bottom: $spacing;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    display: block;
 }
 .image {
     width: 30vw;

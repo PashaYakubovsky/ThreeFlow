@@ -104,7 +104,7 @@ function init() {
         stars.forEach(star => {
             // star.position.y += Math.sin(elapsedTime * 2) * 0.1; // Example animation: move stars up and down
             // star.position.x += Math.sin(elapsedTime * 2) * 0.1; // Example animation: move stars up and down
-            star.position.z += Math.sin(elapsedTime * 2) * 0.01; // Example animation: move stars up and down
+            star.position.z += Math.sin(elapsedTime * 2) * 0.1; // Example animation: move stars up and down
             star.scale.add(
                 new THREE.Vector3(1, 1, 1).multiplyScalar(Math.sin(elapsedTime * 2) * 0.1)
             ); // Example animation: scale stars up and down
@@ -122,6 +122,34 @@ function init() {
 
     const rickRollMesh = createRickRollMesh("/aKaOqIh.gif");
     scene.add(rickRollMesh);
+
+    // Position the cube
+    rickRollMesh.position.z = -5;
+
+    // Set up keyboard controls
+    const keyboard: Record<string, boolean> = {};
+    document.addEventListener("keydown", function (event) {
+        keyboard[event.code] = true;
+    });
+    document.addEventListener("keyup", function (event) {
+        keyboard[event.code] = false;
+    });
+
+    // Animation loop
+    function animateRickRollCube() {
+        requestAnimationFrame(animateRickRollCube);
+
+        // Move the cube based on keyboard arrow keys
+        if (keyboard["ArrowUp"]) rickRollMesh.position.y += 0.1;
+        if (keyboard["ArrowDown"]) rickRollMesh.position.y -= 0.1;
+        if (keyboard["ArrowLeft"]) rickRollMesh.position.x -= 0.1;
+        if (keyboard["ArrowRight"]) rickRollMesh.position.x += 0.1;
+
+        renderer.render(scene, camera);
+    }
+
+    // Start the animation loop
+    animateRickRollCube();
 
     // Debug
     // gui.add(mesh.position, "x").min(-10).max(100).step(0.01).name("Rick Roll X");
@@ -141,7 +169,6 @@ function init() {
             transparent: true,
         });
         let mesh = new THREE.Mesh(geometry, material);
-        mesh.position.set(0, 0, 0);
         return mesh;
     }
 
@@ -209,8 +236,7 @@ function init() {
         });
 
         gsap.to(rickRollMesh.position, {
-            x: (rickRollMesh.position.x + t) * -0.2,
-            y: (rickRollMesh.position.y + t) * -0.002,
+            x: (rickRollMesh.position.x + t) * -0.002,
             z: (rickRollMesh.position.z + t) * -0.0002,
             duration: 0.05,
             ease: "easeOut",
