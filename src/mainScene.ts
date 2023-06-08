@@ -78,7 +78,6 @@ function init() {
 
     // Add controls
     // const controls = new OrbitControls(camera, renderer.domElement);
-
     function addStar() {
         const geometry = new THREE.SphereGeometry(0.1, 24, 24);
         const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -90,9 +89,33 @@ function init() {
 
         star.position.set(x, y, z);
         scene.add(star);
+
+        return star; // Return the star object for later use
     }
 
-    Array(500).fill(0).forEach(addStar);
+    const stars = Array(500).fill(0).map(addStar); // Create an array to store all the star objects
+
+    const clock = new THREE.Clock();
+
+    function animateStar() {
+        const elapsedTime = clock.getElapsedTime();
+
+        // Update the position or any other properties of the stars based on the elapsed time
+        stars.forEach(star => {
+            // star.position.y += Math.sin(elapsedTime * 2) * 0.1; // Example animation: move stars up and down
+            // star.position.x += Math.sin(elapsedTime * 2) * 0.1; // Example animation: move stars up and down
+            star.position.z += Math.sin(elapsedTime * 2) * 0.01; // Example animation: move stars up and down
+            star.scale.add(
+                new THREE.Vector3(1, 1, 1).multiplyScalar(Math.sin(elapsedTime * 2) * 0.1)
+            ); // Example animation: scale stars up and down
+        });
+
+        renderer.render(scene, camera);
+
+        requestAnimationFrame(animateStar);
+    }
+
+    animateStar();
 
     const spaceTexture = new THREE.TextureLoader().load("/space2.jpg");
     scene.background = spaceTexture;
