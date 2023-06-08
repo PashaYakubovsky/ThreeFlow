@@ -13,7 +13,9 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 }
-
+* {
+    cursor: none;
+}
 a {
     font-weight: 500;
     color: #646cff;
@@ -65,7 +67,6 @@ button {
     font-weight: 500;
     font-family: inherit;
     background-color: #1a1a1a;
-    cursor: pointer;
     transition: border-color 0.25s;
 }
 button:hover {

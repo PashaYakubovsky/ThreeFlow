@@ -35,6 +35,9 @@ $spacing: 1rem;
     font-size: 2rem;
     padding: 2rem;
     margin-bottom: $spacing;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .image {
     width: 30vw;

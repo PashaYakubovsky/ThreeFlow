@@ -86,10 +86,31 @@ function init() {
 
         const [x, y, z] = Array(3)
             .fill(0)
-            .map(() => THREE.MathUtils.randFloatSpread(100));
+            .map(() => THREE.MathUtils.randFloatSpread(400));
 
         star.position.set(x, y, z);
         scene.add(star);
+
+        // Animation variables
+        const initialScale = star.scale.clone(); // Store the initial scale of the star
+        const maxScale = initialScale.multiplyScalar(1); // Define the maximum scale for the animation
+        const speed = 0.001; // Adjust this value to control the speed of the animation
+        const rotationSpeed = 0.1; // Adjust this value to control the rotation speed of the spikes
+
+        // Animation function
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Update the scale of the star
+            star.scale.x = Math.sin(Date.now() * speed) * maxScale.x + initialScale.x;
+            star.scale.y = Math.sin(Date.now() * speed) * maxScale.y + initialScale.y;
+            star.scale.z = Math.sin(Date.now() * speed) * maxScale.z + initialScale.z;
+
+            // Rotate the spikes
+            star.rotation.z += rotationSpeed;
+        }
+
+        animate();
     }
 
     Array(500).fill(0).forEach(addStar);
@@ -186,7 +207,7 @@ function init() {
         });
 
         gsap.to(rickRollMesh.position, {
-            x: (rickRollMesh.position.x + t) * -0.02,
+            x: (rickRollMesh.position.x + t) * -0.2,
             y: (rickRollMesh.position.y + t) * -0.002,
             z: (rickRollMesh.position.z + t) * -0.0002,
             duration: 0.05,
