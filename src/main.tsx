@@ -1,8 +1,38 @@
 import "./style.css";
-import "./mainScene.ts";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./app/app.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
+const App = React.lazy(() => import("./pages/home/home.tsx"));
+const Example = React.lazy(() => import("./pages/example/example.tsx"));
+const ExampleGLTF = React.lazy(() => import("./pages/example/exampleGLTF.tsx"));
+
+import { gsap } from "gsap";
+
+import { ScrollTrigger } from "gsap/all";
+import { CSSPlugin } from "gsap/CSSPlugin";
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(CSSPlugin);
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+    },
+    {
+        path: "/example",
+        element: <Example />,
+    },
+    {
+        path: "/exampleGLTF",
+        element: <ExampleGLTF />,
+    },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
+);

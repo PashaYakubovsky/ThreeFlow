@@ -13,9 +13,7 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 }
-* {
-    cursor: none;
-}
+
 a {
     font-weight: 500;
     color: #646cff;
@@ -91,7 +89,9 @@ button:focus-visible {
 }
 
 #app {
-    position: fixed;
-    left: 0;
-    top: 0;
+    display: none;
+}
+#root {
+    height: 100vh;
+    width: 100vw;
 }

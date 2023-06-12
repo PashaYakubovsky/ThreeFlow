@@ -7,12 +7,18 @@ export enum AvailableApis {
     getFoxes = "getFoxes",
 }
 
+export type Control = "orbit" | "point";
+
 interface IAppStore {
     currentApi: AvailableApis;
     response: string;
+    debug: boolean;
     apiCall: (api: AvailableApis) => Promise<void>;
     changeCurrentApi: (nextApi: AvailableApis) => void;
     isLoading: boolean;
+    changeDebug: (nextDebug: boolean) => void;
+    control: Control;
+    changeControl: (nextControl: Control) => void;
 }
 
 const useAppStore = create<IAppStore>(set => ({
@@ -24,6 +30,18 @@ const useAppStore = create<IAppStore>(set => ({
         })),
     response: ``,
     isLoading: false,
+    debug: false,
+    control: "orbit",
+    changeControl: (nextControl: Control) =>
+        set(state => ({
+            ...state,
+            control: nextControl,
+        })),
+    changeDebug: (nextDebug: boolean) =>
+        set(state => ({
+            ...state,
+            debug: nextDebug,
+        })),
     apiCall: async (currentApi: AvailableApis) => {
         set(state => ({ ...state, isLoading: true }));
 

@@ -10,6 +10,9 @@ const Cursor = () => {
 
     useEffect(() => {
         if (!timeline) return;
+        const root = document.querySelector("#root") as HTMLDivElement;
+        if (root) root.style.overflow = "hidden";
+
         gsap.set(followerRef.current, { xPercent: -50, yPercent: -50 });
         gsap.set(cursorRef.current, { xPercent: -50, yPercent: -50 });
 
@@ -33,6 +36,8 @@ const Cursor = () => {
                         borderRadius: "50%",
                         duration: 1,
                     });
+
+                    if (root) root.style.overflow = "";
                 },
             }
         );
@@ -74,7 +79,6 @@ const Cursor = () => {
 
     return (
         <>
-            <span></span>
             <div ref={cursorRef} className={style.cursor} />
             <div ref={followerRef} className={style.follower}></div>
         </>
