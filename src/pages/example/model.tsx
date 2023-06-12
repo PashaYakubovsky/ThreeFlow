@@ -1,4 +1,4 @@
-import { Clone, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useMemo } from "react";
 import * as THREE from "three";
