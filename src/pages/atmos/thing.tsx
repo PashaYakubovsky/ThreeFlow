@@ -1,11 +1,11 @@
-import { GroupProps, ThreeEvent, useFrame } from "@react-three/fiber";
-// @ts-ignore
-import { patchShaders } from "gl-noise";
-import React, { useRef, useEffect, useMemo, useCallback, useState } from "react";
+import { GroupProps, useFrame } from "@react-three/fiber";
+import React, { useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
+import CustomShaderMaterial from "three-custom-shader-material";
 // @ts-ignore
 import { IcosahedronBufferGeometry, PointsMaterial } from "three";
-import CustomShaderMaterial from "three-custom-shader-material";
+// @ts-ignore
+import { patchShaders } from "gl-noise";
 // @ts-ignore
 import { patchShaders } from "gl-noise/build/glNoise.m";
 
