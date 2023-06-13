@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 
 import style from "./atmos.module.scss";
 import AtmosScene from "./atmosScene";
