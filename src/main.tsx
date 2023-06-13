@@ -12,6 +12,7 @@ import { gsap } from "gsap";
 
 import { ScrollTrigger } from "gsap/all";
 import { CSSPlugin } from "gsap/CSSPlugin";
+import Atmos from "./pages/atmos/atmos.tsx";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(CSSPlugin);
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path: "/exampleGLTF",
         element: <ExampleGLTF />,
+    },
+    {
+        path: "/atmos",
+        element: <Atmos />,
     },
 ]);
 
