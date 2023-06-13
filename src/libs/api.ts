@@ -41,3 +41,28 @@ export async function getFox(): Promise<string[]> {
 
     return [];
 }
+
+export async function getRandomText(): Promise<any> {
+    try {
+        const response = await fetch(
+            "https://contentai-net-text-generation.p.rapidapi.com/text-generation/api?category=health-and-medicine",
+            {
+                method: "GET",
+
+                headers: {
+                    "X-RapidAPI-Key": "a5eaa64a73msh85c9f18a18b2b75p189ad2jsn99b9913cb83b",
+                    "X-RapidAPI-Host": "contentai-net-text-generation.p.rapidapi.com",
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        debugger;
+
+        return data.output;
+    } catch (error) {
+        console.error(error);
+    }
+    return null;
+}

@@ -13,7 +13,6 @@ import Model, { Models } from "./model";
 
 const ExampleGLTF = () => {
     useGetQueryValues();
-    useGLTF.preload(Models.map(({ url }) => url));
 
     const control = useAppStore(state => state.control);
     const debug = useAppStore(state => state.debug);
@@ -71,3 +70,5 @@ const ExampleGLTF = () => {
 };
 
 export default ExampleGLTF;
+
+useGLTF.preload(Models.map(({ url }) => url));
