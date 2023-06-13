@@ -20,7 +20,7 @@ gsap.registerPlugin(CSSPlugin);
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <Atmos     />,
     },
     {
         path: "/example",
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <ExampleGLTF />,
     },
     {
-        path: "/atmos",
-        element: <Atmos />,
+        path: "/exampleGSAP",
+        element: <App />,
     },
 ]);
 

@@ -21,6 +21,7 @@
         "@react-three/drei": "^9.74.8",
         "@react-three/fiber": "^8.13.1",
         "dat.gui": "^0.7.9",
+        "gl-noise": "^1.6.1",
         "gsap": "^3.11.5",
         "lamina": "^1.1.23",
         "leva": "^0.9.34",
@@ -33,6 +34,7 @@
         "react-router-dom": "^6.12.1",
         "sass": "^1.62.1",
         "three": "^0.153.0",
+        "three-custom-shader-material": "^5.3.7",
         "zustand": "^4.3.8"
     }
 }

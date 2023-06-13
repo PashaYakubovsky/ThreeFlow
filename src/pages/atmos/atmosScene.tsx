@@ -3,18 +3,11 @@ import * as THREE from "three";
 import Background from "../../components/background/background";
 import CumulusClouds from "../../components/CumulusClouds";
 import Jet from "../../components/Jet";
-import {
-    Float,
-    // OrbitControls,
-    PerspectiveCamera,
-    // PointerLockControls,
-    // ScrollControls,
-    Text,
-    useScroll,
-} from "@react-three/drei";
+import { Billboard, Float, PerspectiveCamera, Text, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
 import useAtmosStore from "../../stores/atmosStore";
+import Thing from "./thing";
 
 const LINE_CR_POINTS = 1200;
 
@@ -112,9 +105,7 @@ const AtmosScene = () => {
                     makeDefault
                 /> */}
 
-                <PerspectiveCamera fov={60} position={[-15, 5, 30]} makeDefault />
-
-                {/* <OrbitControls enableZoom={false} /> */}
+                <PerspectiveCamera fov={60} position={[0, 5, 30]} makeDefault />
 
                 <Background />
 
@@ -130,17 +121,21 @@ const AtmosScene = () => {
             </group>
 
             {/* Text */}
-            <Text
-                color="#fff"
-                anchorX="left"
-                anchorY="middle"
-                maxWidth={2.5}
-                position={[0, 0, 10]}
-                font="/fonts/FiraCode-Bold.ttf"
-                fontSize={0.5}>
-                Welcome to my new app!
-                {text}
-            </Text>
+
+            <Billboard>
+                <Text
+                    color="#fff"
+                    anchorX="left"
+                    anchorY="middle"
+                    maxWidth={5.5}
+                    position={[0, 3, 10]}
+                    font="/fonts/FiraCode-Bold.ttf"
+                    fontSize={0.5}
+                >
+                    Welcome to my new app!
+                    {text}
+                </Text>
+            </Billboard>
 
             {/* Line */}
             <group position={[0, -4, 0]}>
@@ -159,7 +154,9 @@ const AtmosScene = () => {
                 </mesh>
             </group>
 
-            <CumulusClouds scale={[5, 5, 5]} position={[0, 4, -50]} />
+            <Thing scale={[5, 5, 5]} position={[0, 10, -145]} />
+
+            <CumulusClouds scale={[5, 5, 5]} position={[-25, 4, -50]} />
             <CumulusClouds scale={[5, 5, 5]} position={[20, 4, -150]} />
             <CumulusClouds scale={[5, 5, 5]} position={[-20, 4, -100]} />
             <CumulusClouds scale={[5, 5, 5]} position={[30, 8, 10]} />
