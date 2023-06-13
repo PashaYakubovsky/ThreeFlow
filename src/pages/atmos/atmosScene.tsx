@@ -14,7 +14,6 @@ import {
 } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
-import { throttle } from "lodash";
 import useAtmosStore from "../../stores/atmosStore";
 
 const LINE_CR_POINTS = 1200;
@@ -65,46 +64,44 @@ const AtmosScene = () => {
 
     const scroll = useScroll();
 
-    useFrame(
-        throttle((_state, delta) => {
-            if (scroll?.offset === null || scroll?.offset === undefined) return;
-            const curPointIndex = Math.min(
-                Math.round(scroll.offset * linePoints.length),
-                linePoints.length - 1
-            );
+    useFrame((_state, delta) => {
+        if (scroll?.offset === null || scroll?.offset === undefined) return;
+        const curPointIndex = Math.min(
+            Math.round(scroll.offset * linePoints.length),
+            linePoints.length - 1
+        );
 
-            const curPoint = linePoints[curPointIndex];
-            const pointAhead = linePoints[Math.min(curPointIndex + 1, linePoints.length - 1)];
+        const curPoint = linePoints[curPointIndex];
+        const pointAhead = linePoints[Math.min(curPointIndex + 1, linePoints.length - 1)];
 
-            const xDisplacement = (pointAhead.x - curPoint.x) * 80;
+        const xDisplacement = (pointAhead.x - curPoint.x) * 80;
 
-            // Math.PI / 2 --> LEFT
-            // -Math.PI / 2 --> RIGHT
+        // Math.PI / 2 --> LEFT
+        // -Math.PI / 2 --> RIGHT
 
-            const angleRotation =
-                (xDisplacement < 0 ? 1 : 0) * Math.min(Math.abs(xDisplacement), 1, Math.PI / 2);
+        const angleRotation =
+            (xDisplacement < 0 ? 1 : 0) * Math.min(Math.abs(xDisplacement), 1, Math.PI / 2);
 
-            const targetAirplaneQuaternion = new THREE.Quaternion().setFromEuler(
-                new THREE.Euler(
-                    airplane.current!.rotation.x,
-                    airplane.current!.rotation.y,
-                    angleRotation
-                )
-            );
+        const targetAirplaneQuaternion = new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(
+                airplane.current!.rotation.x,
+                airplane.current!.rotation.y,
+                angleRotation
+            )
+        );
 
-            const targetCameraQuaternion = new THREE.Quaternion().setFromEuler(
-                new THREE.Euler(
-                    cameraGroup.current!.rotation.x,
-                    angleRotation,
-                    cameraGroup.current!.rotation.z
-                )
-            );
+        const targetCameraQuaternion = new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(
+                cameraGroup.current!.rotation.x,
+                angleRotation,
+                cameraGroup.current!.rotation.z
+            )
+        );
 
-            airplane.current!.quaternion.slerp(targetAirplaneQuaternion, delta * 2);
-            cameraGroup.current!.quaternion.slerp(targetCameraQuaternion, delta * 2);
-            cameraGroup.current!.position.lerp(curPoint, delta * 24);
-        }, 0.5)
-    );
+        airplane.current!.quaternion.slerp(targetAirplaneQuaternion, delta * 2);
+        cameraGroup.current!.quaternion.slerp(targetCameraQuaternion, delta * 2);
+        cameraGroup.current!.position.lerp(curPoint, delta * 24);
+    });
 
     return (
         <>
