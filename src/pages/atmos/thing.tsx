@@ -4,10 +4,7 @@ import * as THREE from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 // @ts-ignore
 import { IcosahedronBufferGeometry, PointsMaterial } from "three";
-// @ts-ignore
 import { patchShaders } from "gl-noise";
-// @ts-ignore
-import { patchShaders } from "gl-noise/build/glNoise.m";
 
 const shader = {
     vertex: /* glsl */ `

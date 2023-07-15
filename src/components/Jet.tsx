@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Sparkles, useGLTF } from "@react-three/drei";
-import { GroupProps, useFrame } from "@react-three/fiber";
+import { GroupProps } from "@react-three/fiber";
 import * as THREE from "three";
 
 const Jet = (props: GroupProps) => {
@@ -21,14 +21,6 @@ const Jet = (props: GroupProps) => {
             "78909C": THREE.MeshStandardMaterial;
         };
     };
-
-    useFrame(({ clock }) => {
-        const t = clock.getElapsedTime();
-
-        if (ref.current) {
-            ref.current.rotation.set(Math.sin(t) * 2, 0, t);
-        }
-    });
 
     return (
         <group ref={ref} {...props} dispose={null}>

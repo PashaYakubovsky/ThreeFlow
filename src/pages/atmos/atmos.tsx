@@ -5,30 +5,16 @@ import style from "./atmos.module.scss";
 import AtmosScene from "./atmosScene";
 import { ScrollControls } from "@react-three/drei";
 import useAtmosStore from "../../stores/atmosStore";
-
 import { Triangle } from "react-loader-spinner";
 import { Perf } from "r3f-perf";
 import { useGetQueryValues } from "../../hooks/useGetQueryValues";
 import useAppStore from "../../stores/appStore";
-// import { getRandomText } from "../../libs/api";
 
 const Atmos = () => {
     useGetQueryValues();
     const isLoading = useAtmosStore(state => state.isLoading);
     const debug = useAppStore(state => state.debug);
-    // const changeText = useAtmosStore(state => state.changeText);
-    // const changeIsLoading = useAtmosStore(state => state.changeIsLoading);
 
-    // useEffect(() => {
-    //     const init = async () => {
-    //         changeIsLoading(true);
-    //         const text = await getRandomText();
-    //         changeText(text);
-    //         changeIsLoading(false);
-    //     };
-
-    //     init();
-    // }, []);
     return (
         <div className={style.atmos}>
             {isLoading ? (
@@ -53,16 +39,14 @@ const Atmos = () => {
                         wrapperClass={style.spinner}
                         visible={true}
                     />
-                }
-            >
+                }>
                 <Canvas
                     gl={{
                         powerPreference: "high-performance",
                         preserveDrawingBuffer: true,
                         stencil: true,
                         alpha: false,
-                    }}
-                >
+                    }}>
                     <color attach="background" args={["#ececec"]} />
 
                     <ScrollControls pages={3} damping={1}>

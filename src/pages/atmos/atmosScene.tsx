@@ -1,7 +1,7 @@
-import WiseDogOnACloud from "../../components/WiseDogOnAcloud";
+import WiseDogOnACloud from "../../components/wiseDogOnAcloud";
 import * as THREE from "three";
 import Background from "../../components/background/background";
-import CumulusClouds from "../../components/CumulusClouds";
+import CumulusClouds from "../../components/cumulusClouds";
 import Jet from "../../components/Jet";
 import { Billboard, Float, PerspectiveCamera, Text, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -99,12 +99,6 @@ const AtmosScene = () => {
     return (
         <>
             <group ref={cameraGroup}>
-                {/* <PointerCamera
-                    camera={new THREE.PerspectiveCamera(30)}
-                    position={[0, 5, 30]}
-                    makeDefault
-                /> */}
-
                 <PerspectiveCamera fov={60} position={[0, 5, 30]} makeDefault />
 
                 <Background />
@@ -113,7 +107,7 @@ const AtmosScene = () => {
                     <group ref={airplane}>
                         <Jet
                             scale={[0.5, 0.5, 0.5]}
-                            rotation={new THREE.Euler(-0.2, 2.6)}
+                            rotation={new THREE.Euler(1, 2.6)}
                             position-y={0.1}
                         />
                     </group>
@@ -121,7 +115,6 @@ const AtmosScene = () => {
             </group>
 
             {/* Text */}
-
             <Billboard>
                 <Text
                     color="#fff"
@@ -130,8 +123,7 @@ const AtmosScene = () => {
                     maxWidth={5.5}
                     position={[0, 3, 10]}
                     font="/fonts/FiraCode-Bold.ttf"
-                    fontSize={0.5}
-                >
+                    fontSize={0.5}>
                     Welcome to my new app!
                     {text}
                 </Text>
@@ -153,6 +145,10 @@ const AtmosScene = () => {
                     <meshStandardMaterial color="#040404" opacity={0.7} transparent />
                 </mesh>
             </group>
+
+            {/* Lights */}
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[0, 10, 0]} intensity={0.5} />
 
             <Thing scale={[5, 5, 5]} position={[0, 10, -145]} />
 

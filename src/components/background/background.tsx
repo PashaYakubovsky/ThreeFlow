@@ -1,6 +1,6 @@
 import React from "react";
 import { LayerMaterial, Gradient } from "lamina";
-import { Sphere, Environment } from "@react-three/drei";
+import { Sphere } from "@react-three/drei";
 import * as THREE from "three";
 
 const Background = () => {
@@ -17,7 +17,8 @@ const Background = () => {
                     />
                 </LayerMaterial>
             </Sphere>
-            <Environment preset="sunset" />
+
+            {/* <Environment preset="park" /> */}
         </>
     );
 };
